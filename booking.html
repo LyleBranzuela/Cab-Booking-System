@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Cab Booking System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css" />
+
+    <!-- Latest compiled and minified CSS of Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top navbar-shrink" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand js-scroll-trigger text-uppercase" href="#page-top">Cabs Online</a><button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive"
+                aria-expanded="false" aria-label="Toggle navigation">Menu<svg class="svg-inline--fa fa-bars fa-w-14" aria-hidden="true" focusable="false" data-prefix="fas" data-icon="bars" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" data-fa-i2svg=""><path fill="currentColor" d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z"></path></svg><!-- <i class="fas fa-bars"></i> --></button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="#cabrequest">Request A Cab</a></li>
+                    <li class="nav-item"><a class="nav-link"> | </a></li>
+                    <li class="nav-item"><a class="nav-link js-scroll-trigger" href="./admin.html">Login As Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Masthead -->
+    <header class="masthead" id="page-top">
+        <div class="container d-flex h-100 align-items-center">
+            <div class="mx-auto text-center">
+                <h1 class="mx-auto my-0 text-uppercase">Cabs Online</h1>
+                <h2 class="text-white-50 mx-auto mt-2 mb-5">A web-based taxi booking system</h2>
+                <a class="btn btn-dark mainThemeColor" href="#about">Get Started</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- About Section-->
+    <div class="text-center" id="about">
+        <div class="row no-gutters">
+            <div class="col-md-6 no-gutters">
+                <a href="#cabrequest">
+                    <div class="leftside d-flex justify-content-center align-items-center">
+                        <h1 class="text-uppercase text-center">
+                            Request for a Cab
+                        </h1>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-6 no-gutters">
+                <a href="./admin.html">
+                    <div class="rightside d-flex justify-content-center align-items-center">
+                        <h1 class="text-uppercase text-center">
+                            Login as Admin
+                        </h1>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cab Request Section -->
+    <div class="container requestForm" id="cabrequest">
+        <!-- Cab Request Form -->
+        <form onsubmit="return checkform(this)">
+            <br>
+            <hr>
+            <h4 class="form-separator">General Information</h4>
+            <hr>
+            <div class="form-row">
+                <!-- Form Group for User Name -->
+                <div class="form-group col-md-6">
+                    <label for="inputName">Name <strong class="requiredColor">*</strong></label>
+                    <input type="text" class="form-control" id="inputName" name="userName" placeholder="Name" required>
+                </div>
+                <!-- Form Group for User Contact Number -->
+                <div class="form-group col-md-6">
+                    <label for="inputContactNumber">Contact Number <strong class="requiredColor">*</strong></label>
+                    <input type="number" class="form-control" id="inputContactNumber" name="contactNo" placeholder="Contact Number" required>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <!-- Form Row for User Pickup Address (Unit Number, Street Number, Street Name, Suburb) -->
+            <h4 class="form-separator">Pickup Address</h4>
+            <hr>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="inputUnitNumber">Unit Number</label>
+                    <input type="text" class="form-control" id="inputUnitNumber" name="addressUnitNo" placeholder="Unit Number">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="inputStreetNumber">Street Number <strong class="requiredColor">*</strong></label>
+                    <input type="text" class="form-control" id="inputStreetNumber" name="addressStreetNo" placeholder="Street Number" required>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="inputStreetName">Street Name <strong class="requiredColor">*</strong></label>
+                    <input type="text" class="form-control" id="inputStreetName" name="addressStreetName" placeholder="Street Name" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="inputSuburb">Suburb <strong class="requiredColor">*</strong></label>
+                    <input type="text" class="form-control" id="inputSuburb" name="addressSuburb" placeholder="Suburb" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <!-- Form Group for User Pickup Time -->
+                <div class="form-group col-md-6">
+                    <label for="inputTime">Pickup Time <strong class="requiredColor">*</strong></label>
+                    <input step="1" type="time" class="form-control" id="inputTime" name="pickupTime" required>
+                    <small class="form-text text-muted">
+                        Set time should not be less than the current time.
+                    </small>
+                </div>
+                <!-- Form Group for User Pickup Date -->
+                <div class="form-group col-md-6">
+                    <label for="inputDate">Pickup Date <strong class="requiredColor">*</strong></label>
+                    <input type="date" class="form-control" id="inputDate" name="pickupDate" required>
+                    <small class="form-text text-muted">
+                        Set date should not be less than the current date.
+                    </small>
+                </div>
+            </div>
+            <br>
+            <hr>
+            <!-- Form Row for User Destination Address (Unit Number, Street Number, Street Name, Suburb) -->
+            <h4 class="form-separator">Destination Address</h4>
+            <hr>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="destUnitNumber">Unit Number</label>
+                    <input type="text" class="form-control" id="inputDestUnitNumber" name="destUnitNumber" placeholder="Unit Number">
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="destStreetNo">Street Number <strong class="requiredColor">*</strong></label>
+                    <input type="text" class="form-control" id="inputDestStreetNumber" name="destStreetNo" placeholder="Street Number" required>
+                </div>
+                <div class="form-group col-md-5">
+                    <label for="destStreetName">Street Name <strong class="requiredColor">*</strong></label>
+                    <input type="text" class="form-control" id="inputDestStreetName" name="destStreetName" placeholder="Street Name" required>
+                </div>
+                <div class="form-group col-md-3">
+                    <label for="destSuburb">Suburb <strong class="requiredColor">*</strong></label>
+                    <input type="text" class="form-control" id="inputDestSuburb" name="destSuburb" placeholder="Suburb" required>
+                </div>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-dark mainThemeColor">Send Request</button>
+            <button type="reset" class="btn btn-dark mainThemeColor">Reset</button>
+        </form>
+    </div>
+
+    <!-- Placeholder for Popup/Modal until JS updates it -->
+    <div id="confirmationModal"></div>
+
+    <script>
+        // Stops forms from refreshing after submitting
+        var form = document.getElementById("cabrequest");
+
+        function handleForm(event) {
+            event.preventDefault();
+        }
+        form.addEventListener('submit', handleForm);
+
+        /* Scroll Animation for Navigation Bar (Hides when scrolled up) */
+        var prevScrollpos = window.pageYOffset;
+        window.onscroll = function() {
+            var currentScrollPos = window.pageYOffset;
+            if (prevScrollpos > currentScrollPos) {
+                document.getElementById("mainNav").style.top = "-60px";
+            } else {
+                document.getElementById("mainNav").style.top = "0px";
+            }
+            prevScrollpos = currentScrollPos;
+        }
+    </script>
+    <!-- Cab Booking Scripts -->
+    <script type="text/javascript" src="CabBooking.js"></script>
+    <!-- Bootstrap JS, Popper.js, and jQuery Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+</body>
+
+</html>

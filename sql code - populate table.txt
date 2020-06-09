@@ -1,0 +1,13 @@
+create table cabrequests (bookingRefNo varchar(5) NOT NULL UNIQUE, userName varchar(40), contactNo varchar(15), address varchar(255), pickupTime TIME NOT NULL, pickupDate DATE NOT NULL, destAddress varchar(255), status varchar(40));
+insert into cabrequests values('S0034','I love bread!', '24/03/20', 'Only Me', 'Allow Shares');
+insert into cabrequests values('S0402', 'Let us Get This Bread', '22/02/20', 'Public', 'Allow Likes');
+insert into cabrequests values('S5003', 'Test Run!?', '01/01/20', 'Friends', 'Allow Comments');
+
+bookingRefNo
+userName
+contactNo
+address
+pickupTime
+pickupDate
+destAddress
+status

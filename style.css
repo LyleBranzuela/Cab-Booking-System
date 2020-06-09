@@ -1,0 +1,139 @@
+/* General Styles */
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: "Roboto";
+}
+
+hr {
+    border: none;
+    height: 1px;
+    color: #333;
+    background-color: #333;
+}
+
+
+/* Remove Default Arrow from the Number Input Types */
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+
+/* Design Themes */
+
+@font-face {
+    font-family: "Good-Times";
+    src: url("./fonts/good-times.regular.ttf") format("truetype");
+}
+
+.mainThemeColor {
+    color: white;
+    background-color: black;
+}
+
+.requiredColor {
+    color: red;
+}
+
+
+/* Navbar */
+
+.navbar {
+    font-family: "Good-Times";
+}
+
+#mainNav {
+    position: fixed;
+    /* Start out as hidden */
+    top: -60px;
+    width: 100%;
+    transition: top 0.3s;
+    background-color: black;
+}
+
+
+/* Booking styles */
+
+.masthead {
+    position: relative;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url("./images/mountains-landscape-and-road-new-zealand.jpg");
+    width: 100%;
+    height: 100vh;
+    min-height: 35rem;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+}
+
+.masthead h1 {
+    font-family: "Good-Times";
+    font-size: 5em;
+    color: white;
+}
+
+.masthead h2 {
+    font-size: 2.5em;
+}
+
+.leftside,
+.rightside {
+    font-family: "Good-Times";
+    height: 100vh;
+    width: 100%;
+    transition: transform .2s;
+}
+
+.leftside:hover,
+.rightside:hover {
+    opacity: 0.85;
+    transform: scale(0.95);
+}
+
+.leftside {
+    background: black;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./images/pxfuel.com.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+    color: white;
+    font-size: 2.5em;
+}
+
+.rightside {
+    background: black;
+    background-image: linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("./images/hands_coffee.jpg");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: scroll;
+    background-size: cover;
+    color: white;
+    font-size: 2.5em;
+}
+
+@media screen and (min-width: 768px) {
+    .leftside,
+    .rightside {
+        height: 100vh;
+    }
+}
+
+.requestForm {
+    height: 100vh;
+    width: 100%;
+}
+
+.form-separator {
+    font-family: "Good-Times";
+}
