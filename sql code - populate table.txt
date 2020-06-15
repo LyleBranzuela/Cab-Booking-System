@@ -1,13 +1,6 @@
-create table cabrequests (bookingRefNo varchar(5) NOT NULL UNIQUE, userName varchar(40), contactNo varchar(15), address varchar(255), pickupTime TIME NOT NULL, pickupDate DATE NOT NULL, destAddress varchar(255), status varchar(40));
-insert into cabrequests values('S0034','I love bread!', '24/03/20', 'Only Me', 'Allow Shares');
-insert into cabrequests values('S0402', 'Let us Get This Bread', '22/02/20', 'Public', 'Allow Likes');
-insert into cabrequests values('S5003', 'Test Run!?', '01/01/20', 'Friends', 'Allow Comments');
+create table cabrequests (bookingRefNo varchar(10) NOT NULL UNIQUE, userName varchar(40), contactNo varchar(15), address varchar(255), destAddress varchar(40), pickupDateTime DATETIME NOT NULL, bookingDateTime DATETIME NOT NULL, status varchar(40));
+insert into cabrequests values('06847', 'Kyle', '03566771552', '2267 Suite, 202 SQL Test Street 9, Test Suburb 7', '126 SQL Test Street, SQL Test Suburb 8', '2020-06-14 05:53:11', '2020-06-15 03:53:52', 'unassigned');
+insert into cabrequests values('05782', 'Trial', '02896536765', '1155 Suite, 202 SQL Test Street 7, Test Suburb 4', '126 SQL Test Street, SQL Test Suburb 4', '2020-06-14 12:23:12', '2020-06-15 10:00:10', 'unassigned');
+insert into cabrequests values('95511', 'Style', '02793666912', '1567 Suite, 202 SQL Test Street 3, Test Suburb 3', '126 SQL Test Street, SQL Test Suburb 3', '2020-06-14 02:03:11', '2020-06-15 04:53:22', 'unassigned');
 
-bookingRefNo
-userName
-contactNo
-address
-pickupTime
-pickupDate
-destAddress
-status
+NOTE: The bookingDateTime and pickupDateTime are not accurate and are mainly only used to fill up the SQL Table

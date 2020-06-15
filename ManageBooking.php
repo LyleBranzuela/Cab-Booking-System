@@ -11,39 +11,34 @@ $conn = @mysqli_connect(
 
 // Checks if connection is successful
 if (!$conn) {
-    echo "<p>Database connection failure</p>";
+    echo "Database connection failure";
 } else {
     $querycheck = "SELECT bookingRefNo FROM cabrequests";
     $checkResult = mysqli_query($conn, $querycheck);
 
+    // Set up the SQL command to create the table if it does not exist
     if (empty($checkResult)) {
-        // Set up the SQL command to create the table if it does not exist
         $querycheck = "create table cabrequests"
             . "(bookingRefNo varchar(10) NOT NULL UNIQUE,"
             . " userName varchar(40),"
             . " contactNo varchar(15),"
             . " address varchar(255),"
-            . " pickupTime TIME NOT NULL,"
-            . " pickupDate DATE NOT NULL,"
             . " destAddress varchar(40),"
+            . " pickupDateTime DATETIME NOT NULL,"
+            . " bookingDateTime DATETIME NOT NULL,"
             . " status varchar(40));";
         $createTable = mysqli_query($conn, $querycheck);
 
         if (!$createTable) {
-            echo "<script>alert(\"Something is wrong with creating the table ", $querycheck, "\")</script>";
-            echo "<script>alert(\"Success\")</script>";
-        } else {
-            // display an operation successful message
-            echo "<script>alert(\"Success\")</script>";
-        } // if successful query operation
+            echo "Something is wrong with creating the table ", $querycheck, ".";
+        }
     }
-
 
     // If the action is set to "Book"
     $action = $_POST["action"];
     if ($action == "Book") {
         // Get all General Information
-        $bookingRefNo = generateRandomID();
+        $bookingRefNo = generateRandomID($conn, $sql_tble);
         $userName = $_POST["userName"];
         $contactNo = $_POST["contactNo"];
 
@@ -53,26 +48,28 @@ if (!$conn) {
         $address = combineAddress($addressUnitNo, $_POST["addressStreetNo"], $_POST["addressStreetName"], $addressSuburb);
         $pickupTime = $_POST["pickupTime"];
         $pickupDate = $_POST["pickupDate"];
+        $pickupDateTime = $pickupDate . ' ' . $pickupTime;
 
         // Get all Destination Information
         $destUnitNo = (isset($_POST["destUnitNo"])) ? $_POST["destUnitNo"] : "";
         $destSuburb = $_POST["destSuburb"];
         $destAddress = combineAddress($destUnitNo, $_POST["destStreetNo"], $_POST["destStreetName"], $destSuburb);
 
-        // Default Status (unassigned/assigned)
+        // Default Status (unassigned/assigned) - And Booking DateTime 
+        $bookingDateTime = date("Y-m-d H:i:s");
         $status = "unassigned";
 
         // Set up the SQL command to add the data into the table
         $query = "insert into $sql_tble"
-            . "(bookingRefNo, userName, contactNo, address, destAddress, pickupTime, pickupDate, status)"
+            . "(bookingRefNo, userName, contactNo, address, destAddress, pickupDateTime, bookingDateTime, status)"
             . "values"
-            . "('$bookingRefNo','$userName','$contactNo', '$address', '$destAddress', '$pickupTime', '$pickupDate', '$status')";
+            . "('$bookingRefNo','$userName','$contactNo', '$address', '$destAddress', '$pickupDateTime', '$bookingDateTime', '$status')";
 
         // Executes the query
         $result = mysqli_query($conn, $query);
         // Checks if the execution was successful
         if (!$result) {
-            echo "<script>alert(\"Something is wrong with creating the table\")</script>";
+            echo "Something is wrong with inserting data into the table";
         } else {
             $cabBookRequest = array(
                 "bookingRefNo" => $bookingRefNo,
@@ -80,11 +77,11 @@ if (!$conn) {
                 "contactNo" => $contactNo,
                 "address" => $address,
                 "destAddress" => $destAddress,
-                "pickupTime" => $pickupTime,
-                "pickupDate" => $pickupDate,
+                "pickupDateTime" => $pickupDateTime,
+                "bookingDateTime" => $bookingDateTime,
                 "status" => $status
             );
-            echo(toJSON($cabBookRequest));
+            echo (toJSON($cabBookRequest));
         } // If successful query operation
     }
 }
@@ -93,18 +90,28 @@ if (!$conn) {
 function toJSON($cabBookings)
 {
     $json = json_encode($cabBookings);
-    
+
     return $json;
 }
 
-function generateRandomID()
+// Generate Book Ref No (Ranges 0000-9999)
+function generateRandomID($connection, $sql_table)
 {
-    // // Check if the bookingRefNo is Unique
-    // $checkQuery = "SELECT COUNT(*) AS duplicates FROM $sql_tble WHERE statusCode = \"$statusCode\"";
-    // $countResult = mysqli_query($conn, $checkQuery);
-    // $duplicateAmount = mysqli_fetch_assoc($countResult);
-    // $statusCodeUniqueValid = ($duplicateAmount['duplicates'] == 0); // Update Status Code Uniqueness Flag
-    return "0002";
+    $generatedBookRefNo = "";
+
+    // Check if the bookingRefNo is Unique
+    do {
+        for ($counter = 0; $counter < 5; $counter++) {
+            $generatedBookRefNo .= mt_rand(0, 9);
+        }
+
+        // Check if it already exists and loop through if it does
+        $checkQuery = "SELECT COUNT(*) AS duplicates FROM $sql_table WHERE bookingRefNo = \"$generatedBookRefNo\"";
+        $countResult = mysqli_query($connection, $checkQuery);
+        $duplicateAmount = mysqli_fetch_assoc($countResult);
+    } while ($duplicateAmount['duplicates'] != 0);
+
+    return $generatedBookRefNo;
 }
 
 // Helper Function to combine Addresses into a single string (ex. 555 Kali Street, Jordan)

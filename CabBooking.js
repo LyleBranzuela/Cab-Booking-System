@@ -3,8 +3,6 @@ if (window.XMLHttpRequest) {
     xHRObject = new XMLHttpRequest();
 }
 
-
-
 // Set Current Date and Time on Opening
 function updateClock() {
     date = new Date();
@@ -60,77 +58,67 @@ function checkform(form) {
     sendCabRequest();
 }
 
-// Checks if the address inputted exists
-function addressCheck() {
-    return false;
-}
-
 // A Function that creates a popup/modal when the request is finished.
 function showPopupConfirmation() {
     if ((xHRObject.readyState == 4) && (xHRObject.status == 200)) {
         var serverResponse = xHRObject.responseText;
         if (serverResponse != null) {
-            // Creating the Confirmation Popup Modal
-            var bookings = JSON.parse(serverResponse);
-            console.log(bookings);
-            var bookingModal = document.getElementById("confirmationModal");
-            var bookingModalContent = document.createElement("div");
-            bookingModalContent = bookingModal.appendChild(bookingModalContent);
+            try {
+                // Creating the Confirmation Popup Modal
+                var bookings = JSON.parse(serverResponse);
+                var bookingModal = document.getElementById("confirmationModal");
+                var bookingModalContent = document.createElement("div");
+                bookingModalContent = bookingModal.appendChild(bookingModalContent);
 
-            // Reformat Date and Time to d/m/Y and AM-PM
-            let reformattedDate = bookings.pickupDate.split("-");
-            reformattedDate = reformattedDate[2] + "/" + reformattedDate[1] + "/" + reformattedDate[0];
-            let reformattedTime = bookings.pickupTime.split(":");
-            if (reformattedTime[0] == 00) {
-                reformattedTime = 12 + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " AM";
-            } else if (reformattedTime[0] == 12) {
-                reformattedTime = reformattedTime[0] + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " PM";
-            } else if (reformattedTime[0] > 12) {
-                reformattedTime = (reformattedTime[0] - 12) + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " PM";
-            } else if (reformattedTime[0] < 12) {
-                reformattedTime = reformattedTime[0] + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " AM";
+                // Reformatting Date to d/m/Y
+                let splitDateTime = bookings.pickupDateTime.split(' '); // Splitting Y-m-d from H:i:s
+                let reformattedDate = splitDateTime[0].split("-");
+                reformattedDate = reformattedDate[2] + "/" + reformattedDate[1] + "/" + reformattedDate[0];
+
+                // AM-PM Reformatted Time
+                let reformattedTime = splitDateTime[1].split(":");
+                if (reformattedTime[0] == 00) {
+                    reformattedTime = 12 + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " AM";
+                } else if (reformattedTime[0] == 12) {
+                    reformattedTime = reformattedTime[0] + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " PM";
+                } else if (reformattedTime[0] > 12) {
+                    reformattedTime = (reformattedTime[0] - 12) + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " PM";
+                } else if (reformattedTime[0] < 12) {
+                    reformattedTime = reformattedTime[0] + ":" + reformattedTime[1] + ":" + reformattedTime[2] + " AM";
+                }
+
+                // Create the modal popup
+                bookingModalContent.innerHTML = `
+                <!-- Modal -->
+                <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalTitle">Booking Success!</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        Thank you! Your booking reference number is <strong>${bookings.bookingRefNo}</strong>. You will be picked up in front of your provided address at 
+                        <strong>${reformattedTime}</strong> on <strong>${reformattedDate}</strong>.
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-dark" data-dismiss="modal">Confirm</button>
+                    </div>
+                </div>
+                </div>
+                `;
+                $("#confirmModal").modal('show');
+                // Remove When Modal is Hidden instead of Hiding it
+                $(document).on('hidden.bs.modal', '.modal', function() {
+                    $("#confirmModal").remove();
+                    $(".modal-dialog").remove();
+                    bookingModalContent.remove();
+                });
+            } catch (e) {
+                alert("Something went wrong with the parsing of data.");
             }
-
-            console.log(reformattedDate);
-            console.log(reformattedTime);
-
-            bookingModalContent.innerHTML = `
-            <!-- Modal -->
-            <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="modalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Booking Success!</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    Thank you! Your booking reference number is <strong>${bookings.bookingRefNo}</strong>. You will be picked up in front of your provided address at 
-                    <strong>${reformattedTime}</strong> on <strong>${reformattedDate}</strong>.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-dark" data-dismiss="modal">Confirm</button>
-                </div>
-            </div>
-            </div>
-            `;
-            $("#confirmModal").modal('show');
-            $(document).on('hidden.bs.modal', '.modal', function() {
-                $("#confirmModal").remove();
-                $(".modal-dialog").remove();
-                bookingModalContent.remove();
-            });
-        }
-    }
-}
-
-
-function getData() {
-    if ((xHRObject.readyState == 4) && (xHRObject.status == 200)) {
-        var serverResponse = xHRObject.responseXML;
-        if (serverResponse != null) {
-
         }
     }
 }
@@ -146,7 +134,6 @@ function sendCabRequest() {
 
     //Send the proper header information along with the request
     xHRObject.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-
     xHRObject.onreadystatechange = showPopupConfirmation;
     xHRObject.send(params);
 }
