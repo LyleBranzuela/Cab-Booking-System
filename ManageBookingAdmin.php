@@ -23,8 +23,8 @@ if (!$conn) {
         . " contactno varchar(15),"
         . " address varchar(255),"
         . " destaddress varchar(40),"
-        . " pickupdatetime DATETIME NOT NULL,"
-        . " bookingdatetime DATETIME NOT NULL,"
+        . " pickupdatetime timestamp NOT NULL,"
+        . " bookingdatetime timestamp NOT NULL,"
         . " status varchar(40));";
     $createTable = pg_query($conn, $querycheck);
 

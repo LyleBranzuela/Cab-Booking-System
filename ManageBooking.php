@@ -23,8 +23,8 @@ if (!$conn) {
         . " contactno varchar(15),"
         . " address varchar(255),"
         . " destaddress varchar(40),"
-        . " pickupdatetime DATETIME NOT NULL,"
-        . " bookingdatetime DATETIME NOT NULL,"
+        . " pickupdatetime timestamp NOT NULL,"
+        . " bookingdatetime timestamp NOT NULL,"
         . " status varchar(40));";
     $createTable = pg_query($conn, $querycheck);
 
@@ -103,7 +103,7 @@ function generateRandomID($connection, $sql_table)
         }
 
         // Check if it already exists and loop through if it does
-        $checkQuery = "SELECT COUNT(*) AS duplicates FROM $sql_table WHERE bookingrefno = \"$generatedBookRefNo\"";
+        $checkQuery = "SELECT COUNT(*) AS duplicates FROM $sql_table WHERE bookingrefno = '$generatedBookRefNo'";
         $countResult = pg_query($connection, $checkQuery);
         $duplicateAmount = pg_fetch_assoc($countResult);
     } while ($duplicateAmount['duplicates'] != 0);
