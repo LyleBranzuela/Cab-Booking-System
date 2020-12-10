@@ -179,11 +179,11 @@ function viewRequests(hourRange) {
 }
 
 // Function to Assign / Delete a Cab to a Specific Booking Reference Number
-function actionCabRequest(action, bookingRefNo) {
+function actionCabRequest(action, bookingrefno) {
     var url = "ManageBookingAdmin.php";
 
     // Set the Action Parameter (Actions so far: ["Assign", "Delete"])
-    var params = 'action=' + action + '&bookingRefNo=' + bookingRefNo + '&value=' + Number(new Date);
+    var params = 'action=' + action + '&bookingrefno=' + bookingrefno + '&value=' + Number(new Date);
     xHRObject.open("POST", url, true);
 
     //Send the proper header information along with the request
@@ -193,11 +193,11 @@ function actionCabRequest(action, bookingRefNo) {
     // Send the Action Popup Info 
     switch (action) {
         case "Assign":
-            showActionPopupInfo("Assignment of Cab", "The booking request <strong>" + bookingRefNo + "</strong> has been properly assigned.");
+            showActionPopupInfo("Assignment of Cab", "The booking request <strong>" + bookingrefno + "</strong> has been properly assigned.");
             break;
 
         case "Delete":
-            showActionPopupInfo("Deletion of Data", "The booking request <strong>" + bookingRefNo + "</strong> has been properly removed.");
+            showActionPopupInfo("Deletion of Data", "The booking request <strong>" + bookingrefno + "</strong> has been properly removed.");
             break;
 
         default:
