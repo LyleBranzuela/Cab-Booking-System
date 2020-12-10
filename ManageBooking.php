@@ -1,20 +1,23 @@
 <?php
-require_once('../../conf/assign2sqlinfo.inc.php');
+// require_once('../../conf/assign2sqlinfo.inc.php');
 
 // mysqli_connect returns false if connection failed, otherwise a connection value
-$conn = @mysqli_connect(
-    $sql_host,
-    $sql_user,
-    $sql_pass,
-    $sql_db
-);
+// $conn = @mysqli_connect(
+//     $sql_host,
+//     $sql_user,
+//     $sql_pass,
+//     $sql_db
+// );
+
+// SQLite Connect for Heroku
+$conn = pg_connect(getenv("DATABASE_URL"));
 
 // Checks if connection is successful
 if (!$conn) {
     echo "Database connection failure";
 } else {
     $querycheck = "SELECT bookingRefNo FROM cabrequests";
-    $checkResult = mysqli_query($conn, $querycheck);
+    $checkResult = pg_query($conn, $querycheck);
 
     // Set up the SQL command to create the table if it does not exist
     if (empty($checkResult)) {
@@ -27,7 +30,7 @@ if (!$conn) {
             . " pickupDateTime DATETIME NOT NULL,"
             . " bookingDateTime DATETIME NOT NULL,"
             . " status varchar(40));";
-        $createTable = mysqli_query($conn, $querycheck);
+        $createTable = pg_query($conn, $querycheck);
 
         if (!$createTable) {
             echo "Something is wrong with creating the table ", $querycheck, ".";
@@ -66,7 +69,7 @@ if (!$conn) {
             . "('$bookingRefNo','$userName','$contactNo', '$address', '$destAddress', '$pickupDateTime', '$bookingDateTime', '$status')";
 
         // Executes the query
-        $result = mysqli_query($conn, $query);
+        $result = pg_query($conn, $query);
         // Checks if the execution was successful
         if (!$result) {
             echo "Something is wrong with inserting data into the table";
@@ -84,6 +87,9 @@ if (!$conn) {
             echo (toJSON($cabBookRequest));
         } // If successful query operation
     }
+
+    // Close the database connection
+    pg_close($conn);
 }
 
 // Converts the Cab Bookings Data into JSON to be sent back to the JS client-side
@@ -107,8 +113,8 @@ function generateRandomID($connection, $sql_table)
 
         // Check if it already exists and loop through if it does
         $checkQuery = "SELECT COUNT(*) AS duplicates FROM $sql_table WHERE bookingRefNo = \"$generatedBookRefNo\"";
-        $countResult = mysqli_query($connection, $checkQuery);
-        $duplicateAmount = mysqli_fetch_assoc($countResult);
+        $countResult = pg_query($connection, $checkQuery);
+        $duplicateAmount = pg_fetch_assoc($countResult);
     } while ($duplicateAmount['duplicates'] != 0);
 
     return $generatedBookRefNo;
