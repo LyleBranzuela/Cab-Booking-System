@@ -44,7 +44,6 @@ if (!$conn) {
         $currentDateTime = date("Y-m-d H:i:s");
         $maxDateTime = date("Y-m-d H:i:s", strtotime(sprintf("+%d hours", $hourRange)));
         $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupdatetime >= '$currentDateTime' AND pickupdatetime < '$maxDateTime' AND status='unassigned';";
-        echo $viewImmediateQuery;
         viewTable($conn, $viewImmediateQuery);
     }
     // Set up the SQL command to update the data from the table - Assigning a Cab
