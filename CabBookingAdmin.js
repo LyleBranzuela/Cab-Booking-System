@@ -46,7 +46,7 @@ function displayAllCabRequests() {
                     var cabReqeuesttr = document.createElement("tr");
 
                     // Check if the date and time from the JSON data is expired (Less than the Current Time)
-                    let splitDateTime = cabRequest.pickupDateTime.split(' '); // Splitting Y-m-d from H:i:s
+                    let splitDateTime = cabRequest.pickupdatetime.split(' '); // Splitting Y-m-d from H:i:s
                     let jsonDate = new Date(splitDateTime[0]);
                     let jsonTime = splitDateTime[1].split(":")
                     jsonDate.setHours(jsonTime[0], jsonTime[1], jsonTime[2]);
@@ -66,19 +66,19 @@ function displayAllCabRequests() {
                     // Split the Suburb from the Address (The Suburb is always gonna be the last input from the Address)
                     let pickupSuburb = cabRequest.address.split(",");
                     pickupSuburb = pickupSuburb[pickupSuburb.length - 1];
-                    let destSuburb = cabRequest.destAddress.split(",");
+                    let destSuburb = cabRequest.destaddress.split(",");
                     destSuburb = destSuburb[destSuburb.length - 1];
 
                     // Create the Row of Data
                     cabReqeuesttr.innerHTML = `
                     <th scope="row">${requestCounter}</th>
-                    <td>${cabRequest.bookingRefNo}</td>
-                    <td>${cabRequest.bookingDateTime}</td>
-                    <td>${cabRequest.userName}</td>
-                    <td>${cabRequest.contactNo}</td>
+                    <td>${cabRequest.bookingrefno}</td>
+                    <td>${cabRequest.bookingdatetime}</td>
+                    <td>${cabRequest.username}</td>
+                    <td>${cabRequest.contactno}</td>
                     <td>${pickupSuburb}</td>
                     <td>${destSuburb}</td>
-                    <td>${cabRequest.pickupDateTime}</td>
+                    <td>${cabRequest.pickupdatetime}</td>
                     <td>${cabRequest.status}</td>
                     `;
 
