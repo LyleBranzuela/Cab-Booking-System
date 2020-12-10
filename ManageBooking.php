@@ -16,26 +16,17 @@ $conn = pg_connect(getenv("DATABASE_URL"));
 if (!$conn) {
     echo "Database connection failure";
 } else {
-    $querycheck = "SELECT ID FROM cabrequests";
-    $checkResult = pg_query($conn, $querycheck);
-
     // Set up the SQL command to create the table if it does not exist
-    if (empty($checkResult)) {
-        $querycheck = "create table cabrequests"
-            . "(bookingRefNo varchar(10) NOT NULL UNIQUE,"
-            . " userName varchar(40),"
-            . " contactNo varchar(15),"
-            . " address varchar(255),"
-            . " destAddress varchar(40),"
-            . " pickupDateTime DATETIME NOT NULL,"
-            . " bookingDateTime DATETIME NOT NULL,"
-            . " status varchar(40));";
-        $createTable = pg_query($conn, $querycheck);
-
-        if (!$createTable) {
-            echo "Something is wrong with creating the table ", $querycheck, ".";
-        }
-    }
+    $querycheck = "create table if not exists cabrequests"
+        . "(bookingRefNo varchar(10) NOT NULL UNIQUE,"
+        . " userName varchar(40),"
+        . " contactNo varchar(15),"
+        . " address varchar(255),"
+        . " destAddress varchar(40),"
+        . " pickupDateTime DATETIME NOT NULL,"
+        . " bookingDateTime DATETIME NOT NULL,"
+        . " status varchar(40));";
+    $createTable = pg_query($conn, $querycheck);
 
     // If the action is set to "Book"
     $action = $_POST["action"];
