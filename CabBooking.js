@@ -71,7 +71,7 @@ function showPopupConfirmation() {
                 bookingModalContent = bookingModal.appendChild(bookingModalContent);
 
                 // Reformatting Date to d/m/Y
-                let splitDateTime = bookings.pickupDateTime.split(' '); // Splitting Y-m-d from H:i:s
+                let splitDateTime = bookings.pickupdatetime.split(' '); // Splitting Y-m-d from H:i:s
                 let reformattedDate = splitDateTime[0].split("-");
                 reformattedDate = reformattedDate[2] + "/" + reformattedDate[1] + "/" + reformattedDate[0];
 
@@ -100,7 +100,7 @@ function showPopupConfirmation() {
                         </button>
                     </div>
                     <div class="modal-body">
-                        Thank you! Your booking reference number is <strong>${bookings.bookingRefNo}</strong>. You will be picked up in front of your provided address at 
+                        Thank you! Your booking reference number is <strong>${bookings.bookingrefno}</strong>. You will be picked up in front of your provided address at 
                         <strong>${reformattedTime}</strong> on <strong>${reformattedDate}</strong>.
                     </div>
                     <div class="modal-footer">

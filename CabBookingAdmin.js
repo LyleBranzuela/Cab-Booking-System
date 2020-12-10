@@ -46,7 +46,7 @@ function displayAllCabRequests() {
                     var cabReqeuesttr = document.createElement("tr");
 
                     // Check if the date and time from the JSON data is expired (Less than the Current Time)
-                    let splitDateTime = cabRequest.pickupDateTime.split(' '); // Splitting Y-m-d from H:i:s
+                    let splitDateTime = cabRequest.pickupdatetime.split(' '); // Splitting Y-m-d from H:i:s
                     let jsonDate = new Date(splitDateTime[0]);
                     let jsonTime = splitDateTime[1].split(":")
                     jsonDate.setHours(jsonTime[0], jsonTime[1], jsonTime[2]);
@@ -66,19 +66,19 @@ function displayAllCabRequests() {
                     // Split the Suburb from the Address (The Suburb is always gonna be the last input from the Address)
                     let pickupSuburb = cabRequest.address.split(",");
                     pickupSuburb = pickupSuburb[pickupSuburb.length - 1];
-                    let destSuburb = cabRequest.destAddress.split(",");
+                    let destSuburb = cabRequest.destaddress.split(",");
                     destSuburb = destSuburb[destSuburb.length - 1];
 
                     // Create the Row of Data
                     cabReqeuesttr.innerHTML = `
                     <th scope="row">${requestCounter}</th>
-                    <td>${cabRequest.bookingRefNo}</td>
-                    <td>${cabRequest.bookingDateTime}</td>
-                    <td>${cabRequest.userName}</td>
-                    <td>${cabRequest.contactNo}</td>
+                    <td>${cabRequest.bookingrefno}</td>
+                    <td>${cabRequest.bookingdatetime}</td>
+                    <td>${cabRequest.username}</td>
+                    <td>${cabRequest.contactno}</td>
                     <td>${pickupSuburb}</td>
                     <td>${destSuburb}</td>
-                    <td>${cabRequest.pickupDateTime}</td>
+                    <td>${cabRequest.pickupdatetime}</td>
                     <td>${cabRequest.status}</td>
                     `;
 
@@ -87,7 +87,7 @@ function displayAllCabRequests() {
                         // Action: Delete Data
                         cabReqeuesttr.innerHTML += `
                     <td>
-                        <button type="button" class="btn btn-danger" onclick=actionCabRequest(\"Delete\",\"${cabRequest.bookingRefNo}\")><svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <button type="button" class="btn btn-danger" onclick=actionCabRequest(\"Delete\",\"${cabRequest.bookingrefno}\")><svg class="bi bi-trash" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"/>
                             <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4L4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"/></svg>
                         </button>
@@ -96,7 +96,7 @@ function displayAllCabRequests() {
                         // Action: Assign a Driver to Status Data
                         cabReqeuesttr.innerHTML += `
                     <td>
-                        <button type="button" class="btn btn-success" onclick=actionCabRequest(\"Assign\",\"${cabRequest.bookingRefNo}\") ${((cabRequest.status == "assigned") ? "disabled" : "")}>
+                        <button type="button" class="btn btn-success" onclick=actionCabRequest(\"Assign\",\"${cabRequest.bookingrefno}\") ${((cabRequest.status == "assigned") ? "disabled" : "")}>
                             Assign
                         </button>
                     </td>`;
