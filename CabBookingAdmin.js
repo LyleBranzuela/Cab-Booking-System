@@ -115,7 +115,7 @@ function displayAllCabRequests() {
                 requestTable.appendChild(tBody);
 
             } catch (e) {
-                alert("Something went wrong with the parsing of data.");
+                alert("Something went wrong with the parsing of data. " + e);
             }
         }
     }

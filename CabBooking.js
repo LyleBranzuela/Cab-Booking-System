@@ -117,7 +117,7 @@ function showPopupConfirmation() {
                     bookingModalContent.remove();
                 });
             } catch (e) {
-                alert("Something went wrong with the parsing of data.");
+                alert("Something went wrong with the parsing of data. " + e);
             }
         }
     }
