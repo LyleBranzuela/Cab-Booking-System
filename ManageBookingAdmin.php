@@ -1,4 +1,7 @@
 <?php
+// Default Timezone
+date_default_timezone_set('UTC');
+
 // require_once('../../conf/assign2sqlinfo.inc.php');
 
 // mysqli_connect returns false if connection failed, otherwise a connection value
@@ -41,6 +44,7 @@ if (!$conn) {
         $currentDateTime = date("Y-m-d H:i:s");
         $maxDateTime = date("Y-m-d H:i:s", strtotime(sprintf("+%d hours", $hourRange)));
         $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupdatetime >= '$currentDateTime' AND pickupdatetime < '$maxDateTime' AND status='unassigned';";
+        echo $viewImmediateQuery;
         viewTable($conn, $viewImmediateQuery);
     }
     // Set up the SQL command to update the data from the table - Assigning a Cab
