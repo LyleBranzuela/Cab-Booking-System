@@ -39,7 +39,7 @@ if (!$conn) {
 
     // Action variable that will decide what the PHP will do
     $action = $_POST["action"];
-    $viewQuery = "SELECT * FROM $sql_tble;"; // Default View Query to be called for refreshing
+    $viewQuery = "SELECT * FROM cabrequests;"; // Default View Query to be called for refreshing
     // Set up the SQL command to view the data from the table - Viewing All Cab Requests
     if ($action == "View") {
         viewTable($conn, $viewQuery);
@@ -49,13 +49,13 @@ if (!$conn) {
         $hourRange = $_POST["hourRange"];
         $currentDateTime = date("Y-m-d H:i:s");
         $maxDateTime = date("Y-m-d H:i:s", strtotime(sprintf("+%d hours", $hourRange)));
-        $viewImmediateQuery = "SELECT * FROM $sql_tble WHERE pickupDateTime >= '$currentDateTime' AND pickupDateTime < '$maxDateTime' AND status='unassigned';";
+        $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupDateTime >= '$currentDateTime' AND pickupDateTime < '$maxDateTime' AND status='unassigned';";
         viewTable($conn, $viewImmediateQuery);
     }
     // Set up the SQL command to update the data from the table - Assigning a Cab
     else if ($action == "Assign") {
         $bookRefNo = $_POST["bookingRefNo"];
-        $assignQuery = "UPDATE $sql_tble SET status='assigned' WHERE bookingRefNo='$bookRefNo';";
+        $assignQuery = "UPDATE cabrequests SET status='assigned' WHERE bookingRefNo='$bookRefNo';";
         $updateTable = pg_query($conn, $assignQuery);
 
         if (!$updateTable) {
@@ -64,14 +64,14 @@ if (!$conn) {
             // Update Table in the Immediate Table View to the Client Side
             $currentDateTime = date("Y-m-d H:i:s");
             $maxDateTime = date("Y-m-d H:i:s", strtotime(sprintf("+%d hours", 2)));
-            $viewImmediateQuery = "SELECT * FROM $sql_tble WHERE pickupDateTime >= '$currentDateTime' AND pickupDateTime < '$maxDateTime' AND status='unassigned';";
+            $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupDateTime >= '$currentDateTime' AND pickupDateTime < '$maxDateTime' AND status='unassigned';";
             viewTable($conn, $viewImmediateQuery);
         }
     }
     // Set up the SQL command to delete a specific data from the table - Deleting A Cab Requests
     else if ($action == "Delete") {
         $bookRefNo = $_POST["bookingRefNo"];
-        $deleteQuery = "DELETE FROM $sql_tble WHERE bookingRefNo='$bookRefNo';";
+        $deleteQuery = "DELETE FROM cabrequests WHERE bookingRefNo='$bookRefNo';";
         $deleteData = pg_query($conn, $deleteQuery);
 
         if (!$deleteData) {

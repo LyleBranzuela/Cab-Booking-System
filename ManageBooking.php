@@ -41,7 +41,7 @@ if (!$conn) {
     $action = $_POST["action"];
     if ($action == "Book") {
         // Get all General Information
-        $bookingRefNo = generateRandomID($conn, $sql_tble);
+        $bookingRefNo = generateRandomID($conn, "cabrequests");
         $userName = $_POST["userName"];
         $contactNo = $_POST["contactNo"];
 
@@ -63,7 +63,7 @@ if (!$conn) {
         $status = "unassigned";
 
         // Set up the SQL command to add the data into the table
-        $query = "insert into $sql_tble"
+        $query = "insert into cabrequests"
             . "(bookingRefNo, userName, contactNo, address, destAddress, pickupDateTime, bookingDateTime, status)"
             . "values"
             . "('$bookingRefNo','$userName','$contactNo', '$address', '$destAddress', '$pickupDateTime', '$bookingDateTime', '$status')";
