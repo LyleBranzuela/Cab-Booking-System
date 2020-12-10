@@ -1,6 +1,6 @@
 <?php
-// Default Timezone
-date_default_timezone_set('UTC');
+// Default Timezone to NZ
+date_default_timezone_set('NZ');
 
 // require_once('../../conf/assign2sqlinfo.inc.php');
 
