@@ -16,26 +16,17 @@ $conn = pg_connect(getenv("DATABASE_URL"));
 if (!$conn) {
     echo "Database connection failure";
 } else {
-    $querycheck = "SELECT bookingRefNo FROM cabrequests";
-    $checkResult = pg_query($conn, $querycheck);
-
     // Set up the SQL command to create the table if it does not exist
-    if (empty($checkResult)) {
-        $querycheck = "create table cabrequests"
-            . "(bookingRefNo varchar(10) NOT NULL UNIQUE,"
-            . " userName varchar(40),"
-            . " contactNo varchar(15),"
-            . " address varchar(255),"
-            . " pickupDateTime DATETIME NOT NULL,"
-            . " destAddress varchar(40),"
-            . " bookingDateTime DATETIME NOT NULL,"
-            . " status varchar(40));";
-        $createTable = pg_query($conn, $querycheck);
-
-        if (!$createTable) {
-            echo "Something is wrong with creating the table ", $querycheck, ".";
-        }
-    }
+    $querycheck = "create table if not exists cabrequests"
+        . "(bookingrefno varchar(10) NOT NULL UNIQUE,"
+        . " username varchar(40),"
+        . " contactno varchar(15),"
+        . " address varchar(255),"
+        . " destaddress varchar(40),"
+        . " pickupdatetime DATETIME NOT NULL,"
+        . " bookingdatetime DATETIME NOT NULL,"
+        . " status varchar(40));";
+    $createTable = pg_query($conn, $querycheck);
 
     // Action variable that will decide what the PHP will do
     $action = $_POST["action"];
@@ -49,13 +40,13 @@ if (!$conn) {
         $hourRange = $_POST["hourRange"];
         $currentDateTime = date("Y-m-d H:i:s");
         $maxDateTime = date("Y-m-d H:i:s", strtotime(sprintf("+%d hours", $hourRange)));
-        $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupDateTime >= '$currentDateTime' AND pickupDateTime < '$maxDateTime' AND status='unassigned';";
+        $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupdatetime >= '$currentDateTime' AND pickupdatetime < '$maxDateTime' AND status='unassigned';";
         viewTable($conn, $viewImmediateQuery);
     }
     // Set up the SQL command to update the data from the table - Assigning a Cab
     else if ($action == "Assign") {
-        $bookRefNo = $_POST["bookingRefNo"];
-        $assignQuery = "UPDATE cabrequests SET status='assigned' WHERE bookingRefNo='$bookRefNo';";
+        $bookRefNo = $_POST["bookingrefno"];
+        $assignQuery = "UPDATE cabrequests SET status='assigned' WHERE bookingrefno='$bookRefNo';";
         $updateTable = pg_query($conn, $assignQuery);
 
         if (!$updateTable) {
@@ -64,14 +55,14 @@ if (!$conn) {
             // Update Table in the Immediate Table View to the Client Side
             $currentDateTime = date("Y-m-d H:i:s");
             $maxDateTime = date("Y-m-d H:i:s", strtotime(sprintf("+%d hours", 2)));
-            $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupDateTime >= '$currentDateTime' AND pickupDateTime < '$maxDateTime' AND status='unassigned';";
+            $viewImmediateQuery = "SELECT * FROM cabrequests WHERE pickupdatetime >= '$currentDateTime' AND pickupdatetime < '$maxDateTime' AND status='unassigned';";
             viewTable($conn, $viewImmediateQuery);
         }
     }
     // Set up the SQL command to delete a specific data from the table - Deleting A Cab Requests
     else if ($action == "Delete") {
-        $bookRefNo = $_POST["bookingRefNo"];
-        $deleteQuery = "DELETE FROM cabrequests WHERE bookingRefNo='$bookRefNo';";
+        $bookRefNo = $_POST["bookingrefno"];
+        $deleteQuery = "DELETE FROM cabrequests WHERE bookingrefno='$bookRefNo';";
         $deleteData = pg_query($conn, $deleteQuery);
 
         if (!$deleteData) {

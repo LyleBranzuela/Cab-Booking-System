@@ -18,13 +18,13 @@ if (!$conn) {
 } else {
     // Set up the SQL command to create the table if it does not exist
     $querycheck = "create table if not exists cabrequests"
-        . "(bookingRefNo varchar(10) NOT NULL UNIQUE,"
-        . " userName varchar(40),"
-        . " contactNo varchar(15),"
+        . "(bookingrefno varchar(10) NOT NULL UNIQUE,"
+        . " username varchar(40),"
+        . " contactno varchar(15),"
         . " address varchar(255),"
-        . " destAddress varchar(40),"
-        . " pickupDateTime DATETIME NOT NULL,"
-        . " bookingDateTime DATETIME NOT NULL,"
+        . " destaddress varchar(40),"
+        . " pickupdatetime DATETIME NOT NULL,"
+        . " bookingdatetime DATETIME NOT NULL,"
         . " status varchar(40));";
     $createTable = pg_query($conn, $querycheck);
 
@@ -32,9 +32,9 @@ if (!$conn) {
     $action = $_POST["action"];
     if ($action == "Book") {
         // Get all General Information
-        $bookingRefNo = generateRandomID($conn, "cabrequests");
-        $userName = $_POST["userName"];
-        $contactNo = $_POST["contactNo"];
+        $bookingrefno = generateRandomID($conn, "cabrequests");
+        $username = $_POST["username"];
+        $contactno = $_POST["contactno"];
 
         // Get all Pickup Information
         $addressUnitNo = (isset($_POST["addressUnitNo"])) ? $_POST["addressUnitNo"] : "";
@@ -42,22 +42,22 @@ if (!$conn) {
         $address = combineAddress($addressUnitNo, $_POST["addressStreetNo"], $_POST["addressStreetName"], $addressSuburb);
         $pickupTime = $_POST["pickupTime"];
         $pickupDate = $_POST["pickupDate"];
-        $pickupDateTime = $pickupDate . ' ' . $pickupTime;
+        $pickupdatetime = $pickupDate . ' ' . $pickupTime;
 
         // Get all Destination Information
         $destUnitNo = (isset($_POST["destUnitNo"])) ? $_POST["destUnitNo"] : "";
         $destSuburb = $_POST["destSuburb"];
-        $destAddress = combineAddress($destUnitNo, $_POST["destStreetNo"], $_POST["destStreetName"], $destSuburb);
+        $destaddress = combineAddress($destUnitNo, $_POST["destStreetNo"], $_POST["destStreetName"], $destSuburb);
 
         // Default Status (unassigned/assigned) - And Booking DateTime 
-        $bookingDateTime = date("Y-m-d H:i:s");
+        $bookingdatetime = date("Y-m-d H:i:s");
         $status = "unassigned";
 
         // Set up the SQL command to add the data into the table
         $query = "insert into cabrequests"
-            . "(bookingRefNo, userName, contactNo, address, destAddress, pickupDateTime, bookingDateTime, status)"
+            . "(bookingrefno, username, contactno, address, destaddress, pickupdatetime, bookingdatetime, status)"
             . "values"
-            . "('$bookingRefNo','$userName','$contactNo', '$address', '$destAddress', '$pickupDateTime', '$bookingDateTime', '$status')";
+            . "('$bookingrefno','$username','$contactno', '$address', '$destaddress', '$pickupdatetime', '$bookingdatetime', '$status')";
 
         // Executes the query
         $result = pg_query($conn, $query);
@@ -66,13 +66,13 @@ if (!$conn) {
             echo "Something is wrong with inserting data into the table";
         } else {
             $cabBookRequest = array(
-                "bookingRefNo" => $bookingRefNo,
-                "userName" => $userName,
-                "contactNo" => $contactNo,
+                "bookingrefno" => $bookingrefno,
+                "username" => $username,
+                "contactno" => $contactno,
                 "address" => $address,
-                "destAddress" => $destAddress,
-                "pickupDateTime" => $pickupDateTime,
-                "bookingDateTime" => $bookingDateTime,
+                "destaddress" => $destaddress,
+                "pickupdatetime" => $pickupdatetime,
+                "bookingdatetime" => $bookingdatetime,
                 "status" => $status
             );
             echo (toJSON($cabBookRequest));
@@ -96,14 +96,14 @@ function generateRandomID($connection, $sql_table)
 {
     $generatedBookRefNo = "";
 
-    // Check if the bookingRefNo is Unique
+    // Check if the bookingrefno is Unique
     do {
         for ($counter = 0; $counter < 5; $counter++) {
             $generatedBookRefNo .= mt_rand(0, 9);
         }
 
         // Check if it already exists and loop through if it does
-        $checkQuery = "SELECT COUNT(*) AS duplicates FROM $sql_table WHERE bookingRefNo = \"$generatedBookRefNo\"";
+        $checkQuery = "SELECT COUNT(*) AS duplicates FROM $sql_table WHERE bookingrefno = \"$generatedBookRefNo\"";
         $countResult = pg_query($connection, $checkQuery);
         $duplicateAmount = pg_fetch_assoc($countResult);
     } while ($duplicateAmount['duplicates'] != 0);
