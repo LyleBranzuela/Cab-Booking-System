@@ -1,4 +1,7 @@
 <?php
+// Default Timezone
+date_default_timezone_set('UTC');
+
 // require_once('../../conf/assign2sqlinfo.inc.php');
 
 // mysqli_connect returns false if connection failed, otherwise a connection value
