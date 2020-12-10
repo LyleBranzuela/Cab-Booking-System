@@ -16,7 +16,7 @@ $conn = pg_connect(getenv("DATABASE_URL"));
 if (!$conn) {
     echo "Database connection failure";
 } else {
-    $querycheck = "SELECT bookingRefNo FROM cabrequests";
+    $querycheck = "SELECT ID FROM cabrequests";
     $checkResult = pg_query($conn, $querycheck);
 
     // Set up the SQL command to create the table if it does not exist
